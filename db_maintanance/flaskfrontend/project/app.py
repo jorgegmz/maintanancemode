@@ -1,6 +1,6 @@
 #!/bin/bash/python flask
 
-from flask import Flask, render_template
+from flask import Flask, render_template, jsonify
 from flask_cors import CORS
 from flask import current_app
 from flask_sqlalchemy import SQLAlchemy
@@ -28,10 +28,16 @@ def connection_client_string():
         , database='Resonance_Administration'
         )
     cursor = cnxn.cursor()
-    cursor.execute("select connection_string from Account_Connections where Account_ID = %s","activelife")
-    connectionString = cursor.fetchone()
+    cursor.execute("select top 5 * from Account_Connections")
+    #cursor.execute("select * from Account_Connections where Account_ID = %s","activelife")
+    connectionString = cursor.fetchall()
+    for val in connectionString:
+        connection_string.append(val[0].split(','))
+
+    #connectionString = cursor.fetchone()
     cnxn.close()
-    return connectionString
+    return jsonify({'task':connection_string})
+    #return connectionString
 
 
 #def hello():
@@ -40,4 +46,4 @@ def connection_client_string():
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True, threaded=True)
