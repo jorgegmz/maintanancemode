@@ -28,7 +28,16 @@ body {
   font-size: large;
 }
 
+.center {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  #width: 50%;
+}
+
+
 button {
+  display:inline-block;
   margin: 30px;
   font-size: 18px;
   height: 65px;
