@@ -30,7 +30,7 @@ class Counter extends Component {
         xhr.open('GET', 'http://localhost:5000/dbenablemain/'+server);
         xhr.onload = function() {
             xhr.responseText
-            //console.log(xhr.responseText);
+            console.log(xhr.responseText);
             //document.getElementById("enableMode").innerHTML = xhr.responseText;
         };
         xhr.send()
@@ -38,7 +38,17 @@ class Counter extends Component {
 
     // TODO: still needs a lot of work. Reverse of enableMaintenance mode function.
     disableMaintenance = () => {
-        this.setState({count: this.state.count - 1});
+        var xhr = new XMLHttpRequest();
+        let self = this;
+        let server = self.state.selectedServer;
+        console.log(server)
+        xhr.open('GET', 'http://localhost:5000/dbdisablemain/'+server);
+        xhr.onload = function() {
+            xhr.responseText
+            console.log(xhr.responseText);
+            //document.getElementById("disableMode").innerHTML = xhr.responseText;
+        };
+        xhr.send()
     };
 
     populateDropdown = () => {

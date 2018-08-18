@@ -28,7 +28,23 @@ def get_list_acc_id(server_name):
     cnxn.close()
     return connectionString
 
-def enable_update_db(arr_acc_id):
+def enable_maintenance_update_db(arr_acc_id):
+    cnxn = None
+    connection_string = []
+    cnxn = pymssql.connect(host='db2\stn2016'
+            , user='Resonance'
+            , password='NSpace'
+            , database='dba'
+            )
+
+    cursor = cnxn.cursor()
+    for val in arr_acc_id:
+        ''.join(val.lower())
+        cursor.execute("select Account_ID from smworkflow where Account_ID in %s", val)
+        connectionString = cursor.fetchall()
+    cnxn.close()
+
+def disable_maintenance_update_db(arr_acc_id):
     cnxn = None
     connection_string = []
     cnxn = pymssql.connect(host='db2\stn2016'
@@ -59,16 +75,38 @@ def enable_update_url(arr_acc_id):
         connectionString = cursor.fetchall()
     cnxn.close()
 
+def disable_update_url(arr_acc_id):
+    cnxn = None
+    connection_string = []
+    cnxn = pymssql.connect(host='db2\stn2016'
+            , user='Resonance'
+            , password='NSpace'
+            , database='dba'
+            )
+
+    cursor = cnxn.cursor()
+    for val in arr_acc_id:
+        cursor.execute("select Account_ID from serveraccount where Account_ID in %s", val)
+        connectionString = cursor.fetchall()
+    cnxn.close()
 
 @app.route('/dbenablemain/<string:server>')
 def db_enable_maintenance(server):
     acc_id_arr = get_list_acc_id(server)
     print acc_id_arr
     # TODO send array of acc id's to enable db
-    #enable_update_db(acc_id_arr)
+    #enable_maintenance_update_db(acc_id_arr)
     #enable_update_url(acc_id_arr)
     return jsonify({'task':acc_id_arr})
 
+@app.route('/dbdisablemain/<string:server>')
+def db_disable_maintenance(server):
+    acc_id_arr = get_list_acc_id(server)
+    print acc_id_arr
+    # TODO send array of acc id's to enable db
+    #disable_maintenance_update_db(acc_id_arr)
+    #disable_update_url(acc_id_arr)
+    return jsonify({'task':acc_id_arr})
 
 @app.route('/dbservers')
 def connection_client_string():
