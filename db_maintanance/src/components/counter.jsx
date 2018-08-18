@@ -3,65 +3,84 @@ import ReactDOM from 'react-dom';
 import logo from '../images/certonalogo.png';
 import {Dropdown, DropdownToggle, DropdownItem} from 'reactstrap';
 import { DropdownMenu, MenuItem } from 'react-bootstrap-dropdown-menu';
+import Select from 'react-select';
 
 class Counter extends Component {
     constructor(props){
         super(props);
-        this.toggle = this.toggle.bind(this);
         this.state = {
             count: 0,
-            dropdownOpen: true
+            selectedServer: "",
+            scaryAnimals:[]
         };
+        this.populateDropdown();
     }
 
-    toggle(){
-        this.setState(prevState =>({
+    setDropdown = (val) => {
+        this.setState({selectedServer: val.label});
+        return this.state.selectedServer;
+    };
 
-            dropdownOpen: !prevState.dropdownOpen
-        }))
-    }
-
-    increment = () => {
+    // TODO: need to change open('GET') to open('PUT') with value selected from dropdown
+    enableMaintenance = () => {
         var xhr = new XMLHttpRequest();
-        xhr.open('GET', 'http://localhost:5000/hello');
+        let self = this;
+        let server = self.state.selectedServer;
+        console.log(server)
+        xhr.open('GET', 'http://localhost:5000/dbenablemain/'+server);
         xhr.onload = function() {
-            document.getElementById("demo").innerHTML = xhr.responseText;
-                  }
-                  xhr.send()
-        //return this.setState(count) = this.state.count + 1;
-    }
+            xhr.responseText
+            //console.log(xhr.responseText);
+            //document.getElementById("enableMode").innerHTML = xhr.responseText;
+        };
+        xhr.send()
+    };
 
-    decrement = () => {
+    // TODO: still needs a lot of work. Reverse of enableMaintenance mode function.
+    disableMaintenance = () => {
         this.setState({count: this.state.count - 1});
-    }
+    };
+
+    populateDropdown = () => {
+        let xhr = new XMLHttpRequest();
+        let parsedjson = "";
+        let servers = [];
+        let jsonObj;
+        let self = this;
+        xhr.open('GET', 'http://localhost:5000/dbservers');
+        xhr.onload = function () {
+            //console.log(xhr.response);
+            parsedjson = JSON.parse(xhr.response);
+            for(let i = 0; i < parsedjson.task.length; ++i){
+                jsonObj = {"label":parsedjson.task[i].label.toString(), "value":parsedjson.task[i].value.toString()};
+                servers.push(jsonObj);
+            }
+            self.setState({scaryAnimals: servers});
+        };
+        xhr.send();
+    };
 
     render () {
         return (
             <div>
                 <div>
                     <view>
-                    <img src={logo} alt="logo" class="center"/>
+                        <img src={logo} alt="logo" className="center"/>
                     </view>
                 </div>
-                <Dropdown>
-                <DropdownMenu>
-                    <MenuItem text='Home'>Test</MenuItem>
-                </DropdownMenu>
-                    </Dropdown>
+                <div><Select id="server" options={this.state.scaryAnimals} onChange={this.setDropdown.bind(this)}/></div>
                 <h1 >Hello World</h1>
-                {/*<h1>{ this.state.count }</h1>*/}
-                {/*<span>{ this.state.count }</span>*/}
-               <div class="container">
-               <div id="demo">
-                   <button onClick={ this.increment}>Enable Maintanance Mode</button>
-               </div>
-                <button onClick={ this.decrement}>Disable Maintanance Mode</button>
-            </div>
+                <div className="container">
+                    <div id="enableMode">
+                        <button onClick={ this.enableMaintenance}>Enable Maintenance Mode</button>
+                    </div>
+                    <div id="disableMode">
+                    <button onClick={ this.disableMaintenance}>Disable Maintenance Mode</button>
+                    </div>
+                </div>
             </div>
         );
     }
-
-
 }
 
 export default Counter;
