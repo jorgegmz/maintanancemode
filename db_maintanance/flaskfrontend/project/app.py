@@ -16,10 +16,10 @@ CORS(app)
 def get_list_acc_id(server_name):
     cnxn = None
     connection_string = []
-    cnxn = pymssql.connect(host='db2\stn2016'
-            , user='Resonance'
-            , password='NSpace'
-            , database='dba'
+    cnxn = pymssql.connect(host='Some_Host'
+            , user='Some_User_Name'
+            , password='Some_Password'
+            , database='Some_Database'
             )
 
     cursor = cnxn.cursor()
@@ -31,10 +31,10 @@ def get_list_acc_id(server_name):
 def enable_maintenance_update_db(arr_acc_id):
     cnxn = None
     connection_string = []
-    cnxn = pymssql.connect(host='db2\stn2016'
-            , user='Resonance'
-            , password='NSpace'
-            , database='dba'
+    cnxn = pymssql.connect(host='Some_Host'
+            , user='Some_User_Name'
+            , password='Some_Password'
+            , database='Some_Database'
             )
 
     cursor = cnxn.cursor()
@@ -47,10 +47,10 @@ def enable_maintenance_update_db(arr_acc_id):
 def disable_maintenance_update_db(arr_acc_id):
     cnxn = None
     connection_string = []
-    cnxn = pymssql.connect(host='db2\stn2016'
-            , user='Resonance'
-            , password='NSpace'
-            , database='dba'
+    cnxn = pymssql.connect(host='Some_Host'
+            , user='Some_User_Name'
+            , password='Some_Password'
+            , database='Some_Database'
             )
 
     cursor = cnxn.cursor()
@@ -63,10 +63,10 @@ def disable_maintenance_update_db(arr_acc_id):
 def enable_update_url(arr_acc_id):
     cnxn = None
     connection_string = []
-    cnxn = pymssql.connect(host='db2\stn2016'
-            , user='Resonance'
-            , password='NSpace'
-            , database='dba'
+    cnxn = pymssql.connect(host='Some_Host'
+            , user='Some_User_Name'
+            , password='Some_Password'
+            , database='Some_Database'
             )
 
     cursor = cnxn.cursor()
@@ -78,10 +78,10 @@ def enable_update_url(arr_acc_id):
 def disable_update_url(arr_acc_id):
     cnxn = None
     connection_string = []
-    cnxn = pymssql.connect(host='db2\stn2016'
-            , user='Resonance'
-            , password='NSpace'
-            , database='dba'
+    cnxn = pymssql.connect(host='Some_Host'
+            , user='Some_User_Name'
+            , password='Some_Password'
+            , database='Some_Database'
             )
 
     cursor = cnxn.cursor()
@@ -113,10 +113,10 @@ def connection_client_string():
     cnxn = None
     connection_string = []
     distinct_server = []
-    cnxn = pymssql.connect(host='db2\stn2016'
-        , user='Resonance'
-        , password='NSpace'
-        , database='dba'
+    cnxn = pymssql.connect(host='Some_Host'
+        , user='Some_User_Name'
+        , password='Some_Password'
+        , database='Some_Database'
         )
     cursor = cnxn.cursor()
     cursor.execute("select ServerOut, Account_ID from serveraccount")
